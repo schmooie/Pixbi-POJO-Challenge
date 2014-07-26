@@ -1,0 +1,74 @@
+<html>
+
+<body>
+  <script>
+  var boundsX = document.body.offsetWidth;
+  var boundsY = document.body.offsetHeight;
+
+  var randomHex = function() {
+    return '#' + (Math.random().toString(16) + '000000').slice(2, 8);
+  };
+
+  var randomNum = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  var moveDiv = function(el) {
+    var speedX = randomNum(1,5);
+    var speedY = randomNum(1,5);
+    var directionX = 1;
+    var directionY = 1;
+
+    var animate = function () {
+      var posLeft = el.offsetLeft;
+      var posRight = posLeft + el.offsetWidth;
+      var posTop = el.offsetTop;
+      var posBottom = posTop + el.offsetHeight;
+
+      if (posRight > boundsX) {
+        directionX = -1;
+      }
+      if (posLeft < 0) {
+        directionX = 1;
+      }
+      el.style.left = (posLeft + speedX * directionX) + 'px';
+
+      if (posBottom > boundsY) {
+        directionY = -1;
+      }
+      if (posTop < 0) {
+        directionY = 1;
+      }
+      el.style.top = (posTop + speedY * directionY) + 'px';
+    };
+
+    setInterval(animate, 30);
+  };
+
+  var MagicDiv = function(height, width) {
+    var div = document.createElement('div');
+
+    div.style.backgroundColor = randomHex();
+    div.style.height = height;
+    div.style.width = width;
+    div.style.position = 'absolute';
+    document.body.appendChild(div);
+
+    div.addEventListener('click', function() {
+      var cloneDiv = new MagicDiv(50,50);
+      var newDim = randomNum(25,100);
+
+      div.style.width = newDim + 'px';
+      div.style.height = newDim + 'px';
+    });
+
+    moveDiv(div);
+  };
+
+  window.onload = function() {
+    new MagicDiv(50, 50);
+  };
+  </script>
+</body>
+
+</html>
